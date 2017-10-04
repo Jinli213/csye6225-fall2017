@@ -3,7 +3,7 @@ Repository for csye6225
 
 Team member information such as Name and Email address.
 Jin Li  li.jin3@husky.neu.edu
-Chenyang Zhao 
+Chenyang Zhao zhao.chenya@husky.neu.edu
 
 Prerequisites for building and deploying your application locally.
 Build and Deploy instructions for web application.
