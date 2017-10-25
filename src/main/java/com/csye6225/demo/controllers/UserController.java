@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.csye6225.demo.pojo.User;
-import com.csye6225.demo.pojo.UserRepository;
+import com.csye6225.demo.pojo.Account;
+import com.csye6225.demo.pojo.AccountRepository;
 
 import java.util.List;
 
@@ -13,17 +13,17 @@ import java.util.List;
 @Controller
 public class UserController {
     @Autowired(required = false)
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     @ResponseBody
-    public String addUser(@RequestBody User user) {
+    public String addUser(@RequestBody Account account) {
 
-        User u = new User();
+        Account a = new Account();
         boolean flag = false;
-        List<User> users = (List<User>) userRepository.findAll();
-        for(User user1 : users){
-            if (user.getEmail().equals(user1.getEmail())){
+        List<Account> users = (List<Account>) accountRepository.findAll();
+        for(Account user : users){
+            if (account.getEmail().equals(user.getEmail())){
                 flag =true;
                 break;
             }
@@ -32,12 +32,12 @@ public class UserController {
             return "account has already existed";
         }
         else{
-            String pw_hash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+            String pw_hash = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
             System.out.println(pw_hash);
 
-            u.setEmail(user.getEmail());
-            u.setPassword(pw_hash);
-            userRepository.save(u);
+            a.setEmail(account.getEmail());
+            a.setPassword(pw_hash);
+            accountRepository.save(a);
         }
             return "added successfully";
 

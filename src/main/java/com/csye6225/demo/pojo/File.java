@@ -32,6 +32,14 @@ public class File {
         this.url = url;
     }
 
+    public Long getFileID() {
+        return fileID;
+    }
+
+    public void setFileID(Long fileID) {
+        this.fileID = fileID;
+    }
+
     public File() {
     }
 

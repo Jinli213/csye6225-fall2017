@@ -18,12 +18,14 @@ public class Task {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userID")
-    private User user;
+    @JoinColumn(name = "user_id", referencedColumnName = "accountID")
+    private Account account;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private Set<File> files;
 
+    @Transient
+    private String createdBy;
 
     public Task(){
 
@@ -45,12 +47,12 @@ public class Task {
         this.taskID = taskID;
     }
 
-        public User getUser() {
-        return user;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public Set<File> getFiles() {
@@ -61,9 +63,17 @@ public class Task {
         this.files = files;
     }
 
-    public Task(String description, User user) {
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Task(String description, Account account) {
         this.description = description;
-        this.user = user;
+        this.account = account;
     }
 
 }
