@@ -8,7 +8,7 @@ install: true
 script:
 #  - ./gradlew build
   - ./gradlew war
-  - gradle -Dtest.single = DemoApplicationTests test
+  - gradle -Dtest.single=DemoApplicationTests test
 #after_success:
 #  - mkdir codedeploy
 #  -zip -r CSYE6225Project.zip build/libs/test-1.0.0.war appspec.yml
