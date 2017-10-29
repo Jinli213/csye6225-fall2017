@@ -6,7 +6,45 @@ sudo: false
 install: true
 
 script:
-  - ./gradlew war
+  - "./gradlew war"
+  - gradle -Dtest.single=DemoApplicationTests test
+
+after_success:
+  - mkdir codedeploy
+  -zip -r CSYE6225Project.zip build/libs/ROOT.war appspec.yml
+  -ls -al
+  -mv CSYE6225Project.zip codedeploy/
+  -ls -al
+  -pwd
+  -cd codedeploy
+  -ls -al
+  -pwd
+
+before_deploy:
+  - cd ..
+
+deploy:
+  - provider: s3
+    access_key_id: AKIAILXBWBQ6YYX2ROFA
+    secret_access_key:
+      secure: bYrSoBXp8E9uHH5EEcyFJvo2ck3V41cCoIGTYaSyGnlSA/o3biRoxV+RlN8QxCGiEopEAXHL/H/h55Wflzk8CA6X2hzelmsrsuBpinmc1ZQ606d7jV8wRmZhaRljmqNIy0WKaRtcln4DRyj53E2RNZrDK1fw0/hkX6rDjMKrbfKMNJ1UmRP2CWMopGHKa83TbB9gp3Yn7lQIu8tWXzF7ITFcuwrWFyS5OxBigv/KstkgMiyyu19pNzKJ9mS0slm4vu24MNJnp5fUOQDwcH+UktZs/zujO/rZPyg/pVjE7Ia/sZoRt6NE2qR+gfn5xqmiDUMA1ZKnS9wqLHiZz3Hhb37c2Gysarv5Oie/G/lO0eAb1RvDqo1tJlqaom/+QkDEvD7TIJleXS982AksPd4sdckWOs1R4CNjZJdlH83aWDKDYqYaGuZnvIvzYQe4s9odTV49hSX7sPG4jGyX6yX8TtC8FPOdbQipWA+fhmy7GmInhkEOS+PcRuaLFc91ZHRnoo3sCqkDPY1km/xUA72UQ0jDVQT0xtXXPP2v2CCTgO5OZzdGccTnB+KxsiRlDQmP9vKxgh+sw8Cx95YbrVNs3t2sdwisGgn1TUK2Nz64ZPmEzpkeHkskrWT+1938BgSwTCJFxFTwwuAHA36nZ5XR6l3R84om2oONhWoWAQdh1Ks=
+    local_dir: codedeploy
+    bucket: code-deploy.csye6225-fall2017-lijin3.me
+    region: us-east-1
+    skip_cleanup: true
+  - provider: codedeploy
+    access_key_id: AKIAILXBWBQ6YYX2ROFA
+    bucket: code-deploy.csye6225-fall2017-lijin3.me
+    key: CSYE6225Project.zip
+    bundle_type: zip
+    application: CSYE6225Project
+    deployment_group: CSYE6225Project
+    region: us-east-1
+    secret_access_key:
+      secure: bYrSoBXp8E9uHH5EEcyFJvo2ck3V41cCoIGTYaSyGnlSA/o3biRoxV+RlN8QxCGiEopEAXHL/H/h55Wflzk8CA6X2hzelmsrsuBpinmc1ZQ606d7jV8wRmZhaRljmqNIy0WKaRtcln4DRyj53E2RNZrDK1fw0/hkX6rDjMKrbfKMNJ1UmRP2CWMopGHKa83TbB9gp3Yn7lQIu8tWXzF7ITFcuwrWFyS5OxBigv/KstkgMiyyu19pNzKJ9mS0slm4vu24MNJnp5fUOQDwcH+UktZs/zujO/rZPyg/pVjE7Ia/sZoRt6NE2qR+gfn5xqmiDUMA1ZKnS9wqLHiZz3Hhb37c2Gysarv5Oie/G/lO0eAb1RvDqo1tJlqaom/+QkDEvD7TIJleXS982AksPd4sdckWOs1R4CNjZJdlH83aWDKDYqYaGuZnvIvzYQe4s9odTV49hSX7sPG4jGyX6yX8TtC8FPOdbQipWA+fhmy7GmInhkEOS+PcRuaLFc91ZHRnoo3sCqkDPY1km/xUA72UQ0jDVQT0xtXXPP2v2CCTgO5OZzdGccTnB+KxsiRlDQmP9vKxgh+sw8Cx95YbrVNs3t2sdwisGgn1TUK2Nz64ZPmEzpkeHkskrWT+1938BgSwTCJFxFTwwuAHA36nZ5XR6l3R84om2oONhWoWAQdh1Ks=
+    wait-until-deployed: true
+    on:
+      branch: assignment7
 
 notifications:
   email:

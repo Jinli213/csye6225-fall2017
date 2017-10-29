@@ -1,0 +1,41 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Metadata": {
+        "AWS::CloudFormation::Designer": {
+            "a38940bb-e8bc-4b60-bf33-7055f9062d9f": {
+                "size": {
+                    "width": 60,
+                    "height": 60
+                },
+                "position": {
+                    "x": 140,
+                    "y": 50
+                },
+                "z": 0,
+                "embeds": []
+            }
+        }
+    },
+    "Resources": {
+        "EC2IXJ54": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-cd0f5cb6",
+                "InstanceType": "t2.micro",
+                "security-groups": "csye6225-fall2017-webapp",
+                "block-device-mappings": {
+                    "Ebs": {
+                        "DeleteOnTermination": false,
+                        "VolumeSize": 16,
+                        "VolumeType": "gp2"
+                    }
+                }
+            },
+            "Metadata": {
+                "AWS::CloudFormation::Designer": {
+                    "id": "a38940bb-e8bc-4b60-bf33-7055f9062d9f"
+                }
+            }
+        }
+    }
+}
