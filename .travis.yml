@@ -32,6 +32,8 @@ deploy:
     bucket: code-deploy.csye6225-fall2017-lijin3.me
     region: us-east-1
     skip_cleanup: true
+    on:
+     branch: assignment7
   - provider: codedeploy
     access_key_id: AKIAILXBWBQ6YYX2ROFA
     bucket: code-deploy.csye6225-fall2017-lijin3.me
