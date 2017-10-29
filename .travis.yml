@@ -12,7 +12,7 @@ script:
 
 after_success:
   - mkdir codedeploy
-  -zip -r CSYE6225Project.zip build/libs/test-1.0.0.war appspec.yml
+  -zip -r CSYE6225Project.zip build/libs/ROOT.war appspec.yml
   -ls -al
   -mv CSYE6225Project.zip codedeploy/
   -ls -al
