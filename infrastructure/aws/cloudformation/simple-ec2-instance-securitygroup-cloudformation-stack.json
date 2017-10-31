@@ -10,20 +10,30 @@
                 "SecurityGroupIds": [
                     {
                         "Fn::GetAtt": [
-                            "WebServerSecurityGroup",
+                            "csye6225webapp",
                             "GroupId"
                         ]
                     }
                 ],
-                "KeyName": "csye6225-aws",
-                "SubnetId": "subnet-4e1db42a"
+                "KeyName": "id_rsa",
+                "SubnetId": { "Ref" : "ParamSubnetID" },
+                "BlockDeviceMappings" : [
+                    {
+                       "DeviceName" : "/dev/sda1",
+                       "Ebs" : {
+                          "VolumeType" : "gp2",
+                          "VolumeSize" : "16"
+                       }
+                    }
+                 ],
+                "DisableApiTermination": false
             }
         },
-        "WebServerSecurityGroup": {
+        "csye6225webapp": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
-                "GroupDescription": "Enable HTTP access via port 80, SSH access via port 22",
-                "VpcId": "vpc-b5719ecd",
+                "GroupDescription": "security group for ec2",
+                "VpcId" : { "Ref" : "ParamVPCID" },
                 "SecurityGroupIngress": [
                     {
                         "IpProtocol": "tcp",
@@ -36,9 +46,114 @@
                         "FromPort": "22",
                         "ToPort": "22",
                         "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "443",
+                        "ToPort": "443",
+                        "CidrIp": "0.0.0.0/0"
                     }
                 ]
             }
-        }
-    }
+        },
+        "csye6225rds": {
+            "Type": "AWS::RDS::DBSecurityGroup",
+            "Properties": {
+                "DBSecurityGroupIngress": { 
+                    "EC2SecurityGroupId": { "Fn::GetAtt" : [ "csye6225webapp", "GroupId" ] }
+                },
+                "EC2VpcId" : { "Ref" : "ParamVPCID" },
+                "GroupDescription" : "security group for rds"
+            }
+        },
+        "DBSubnetGroup" : {
+            "Type" : "AWS::RDS::DBSubnetGroup",
+            "Properties" : {
+               "DBSubnetGroupDescription" : "DBSubnetGroup",
+               "SubnetIds" : [ { "Ref" : "ParamSubnetID" }, {"Ref": "ParamSubnetID2"} ]
+            }
+         },
+         "RecordSetGroup": {
+            "Type" : "AWS::Route53::RecordSetGroup",
+            "Properties" : {
+               "Comment" : "Update record to reflect new IP address",
+               "HostedZoneId" :  { "Ref" : "ParamHostedZoneID" },
+               "RecordSets" : [ 
+                    {
+                        "Name": { "Ref" : "ParamRecordSetsName" },
+                        "Type" : "A",
+                        "TTL" : "60",
+                        "ResourceRecords" : [
+                            { "Fn::GetAtt" : [ "EC2Instance", "PublicIp" ] }
+                        ]
+                    }
+                ]
+            }
+         },
+        "DynamoDBTable": {
+            "Type" : "AWS::DynamoDB::Table",
+            "Properties" : {
+                "AttributeDefinitions" : [  
+                    {
+                        "AttributeName" : "id",
+                        "AttributeType" : "S"   
+                    } 
+                ],
+                "KeySchema" : [ 
+                    {
+                        "AttributeName" : "id",
+                        "KeyType" : "HASH"
+                    } 
+                ],
+                "TableName" : "csye6225",
+                "ProvisionedThroughput" : {
+                    "ReadCapacityUnits" : "5",
+                    "WriteCapacityUnits" : "5"
+                }
+            }
+        },
+        "RecordServiceS3Bucket": {
+            "Type": "AWS::S3::Bucket",
+            "DeletionPolicy": "Delete",
+            "Properties": {
+                "BucketName" : { "Fn::Join" : ["", [{ "Ref" : "ParamRecordSetsName" }, "csye6225.com"]]}
+            }
+        },
+        "RDSInstance": {
+            "Type" : "AWS::RDS::DBInstance",
+            "Properties" : {
+               "DBName" : "csye6225",
+               "AllocatedStorage" : "10",
+               "DBInstanceClass" : "db.t2.medium",
+               "MultiAZ" : false,
+               "Engine" : "MySQL",
+               "EngineVersion" : "5.6.35",
+               "MasterUsername" : "csye6225master",
+               "MasterUserPassword" :"csye6225password",
+               "StorageType" : "gp2",
+               "DBSecurityGroups" : [ {"Ref" : "csye6225rds"}],
+               "DBInstanceIdentifier" : "csye6225-fall2017",
+               "PubliclyAccessible" : false,
+               "DBSubnetGroupName" : { "Ref" : "DBSubnetGroup" }
+            },
+            "DeletionPolicy" : "Delete"
+         }     
+    },
+    "Parameters" : {
+       "ParamVPCID" : {
+            "Type" : "String"
+       },
+       "ParamSubnetID" : {
+            "Type" : "String"
+       },
+       "ParamSubnetID2" : {
+            "Type" : "String"
+       },
+       "ParamHostedZoneID" : {
+            "Type" : "String"
+       },
+       "ParamRecordSetsName" : {
+            "Type" : "String"
+       }
+   }
 }
