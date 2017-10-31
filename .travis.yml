@@ -6,14 +6,14 @@ sudo: false
 install: true
 
 script:
-  - ./gradlew war
+  - ./gradlew build
   - gradle -Dtest.single=DemoApplicationTests test
 
 after_success:
   - mkdir codedeploy
-  - zip -r CSYE6225Project.zip build/libs/ROOT.war appspec.yml
+  - zip -r csye6225_application.zip build/libs/ROOT.war appspec.yml restartTomcat.sh
   - ls -al
-  - mv CSYE6225Project.zip codedeploy/
+  - mv csye6225_application.zip codedeploy/
   - ls -al
   - pwd
   - cd codedeploy
@@ -37,10 +37,10 @@ deploy:
   - provider: codedeploy
     access_key_id: AKIAILXBWBQ6YYX2ROFA
     bucket: code-deploy.csye6225-fall2017-lijin3.me
-    key: CSYE6225Project.zip
+    key: csye6225_application.zip
     bundle_type: zip
-    application: CSYE6225Project
-    deployment_group: CSYE6225Project
+    application: csye6225_application
+    deployment_group: csye6225_application
     region: us-east-1
     secret_access_key:
      secure: kn/Q/aZJxv6QNStgWoU+4Q2yFibEmvKLWMYxpLHLUj+GOZHU06AIcSmdcvkMcLdSlPFNacW3H8kbGp3LKskPsuRSqOdvkjigtFzy97qd69i+1P5jyMuCva3Hz4lg/uezDbuwcIFckDe7MVjwM579B667+jOMgPme9ko1jUSr0NkgzIHWbsvYzCqWdi3/UMqrfX78V7GMFRZgJLANHNMFHuCOm9T/nW2YNJersyGUwmy2XzIOpcZFP+gsjPnEdsI3owXFlo+Toh7sbYVhCza5h4BhdN7Ie23U5UnccoXGcr1jDcjmmMvWv+bUes5P7Wqx+bMRMoSmUCZRXcFObaLyKNkQrGXMadKG/8jcYstrWuCa69D0gCnOVl5GMvg+q/vVeDlEBROaByRIBv73rvx8ppveZMeST1HN4V9iTUulxuMmAVddNDkFdE9mHUfRek1GhSCJ/7x5KD+5ETAfYefIMBAUksJqEDcaiT0EgVKqJY16ttDOu3gdVF8CqMxSKo7R5pUrZlYoQUGCcImmvRC0NlvsQ2eGPH7dbaColuZuuQiu11YFzGY0AfgGUA8aoQtCKNjKzAMhjOkTjSo7Lifsmqdl4IVwZ7O2aP1cj+oaQ8shqBMoIJKeXkYUgYVZ+wsMj4VC3TclFZZvTaYRnlOJwDE219PAnI6zEy7XZFgz4Ec=
