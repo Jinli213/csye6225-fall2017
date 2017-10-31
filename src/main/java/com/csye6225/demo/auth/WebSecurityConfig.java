@@ -1,7 +1,11 @@
 package com.csye6225.demo.auth;
 
+import com.csye6225.demo.pojo.Account;
+import com.csye6225.demo.pojo.AccountRepository;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -12,11 +16,17 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
 
+import java.util.List;
+
+
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private BasicAuthEntryPoint basicAuthEntryPoint;
+
+  @Autowired
+  private AccountRepository accountRepository;
 
 
   @Autowired
@@ -32,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .httpBasic()
         .authenticationEntryPoint(basicAuthEntryPoint);
+
   }
 
   @Bean
@@ -41,8 +52,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public UserDetailsService userDetailsService() {
+
     InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
     manager.createUser(User.withUsername("user").password(bCryptPasswordEncoder.encode("password")).roles("USER").build());
+    List<Account> users = (List<Account>) accountRepository.findAll();
+    for(Account a : users){
+      manager.createUser(User.withUsername(a.getEmail()).password(a.getPassword()).roles("USER").build());
+      System.out.println("the user info  "+a.getEmail()+"  "+a.getPassword());
+    }
     return manager;
   }
+
 }

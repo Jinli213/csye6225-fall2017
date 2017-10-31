@@ -6,9 +6,50 @@ sudo: false
 install: true
 
 script:
+  - ls -al
+  - ./gradlew build
   - ./gradlew war
+
+after_success:
+  - mkdir codedeploy
+  - zip -r web_app_application_wyt.zip build/libs/ROOT.war appspec.yml restartTomcat.sh
+  - ls -al
+  - mv web_app_application_wyt.zip codedeploy/
+  - ls -al
+  - pwd
+  - cd codedeploy
+  - ls -al
+  - pwd
+
+before_deploy:
+  - cd ..
+
+deploy:
+  - provider: s3
+    access_key_id: AKIAIKLAJ4TICD3P7GGQ
+    secret_access_key:
+      secure: ZsnqMhqTEnGKsXrayA2QYGHZq4OD+nNZYrxVNvhBcg6SzyegyIqMN7hcKImAATAfBNRXRvisusDvkP/LnDUBvtfZ/5vGoUUKqbibJUDRpwI4bSdYuEiz7v0yiukic1OFp7B3pEvGK5WyPQH1PiWcLnQr7tF9rTNRjyGFC7pIL/C+PwO8AByK+K1ToTjoOpi+XQ8Kgf23Se9Xbv1gcxaVrv/y/+C3fmC5dIK3gZHw0GKKDaWOlwCd+6f3oTJikGKao4RcqD6d+SSzDYtvtgd0v6y8GR/DOPV19crLlye9C2/BceYjqrVA2iJQ9lRNuf4nKDFeBjC3I+sJPUbnvQAo5z2m25NMU3GCjQ2tdgDhXgD+xP1/oAlvfl+0+XQs79cKl/S0j5hT3mpjJx2ils8I4wTGtEoDYADujZakrWt+/mYc1CEmsq1lp8ulk0N3qzSviMtclMTxMxxCk9Ek/N2BhVSO2sHZ7SVNfdvuEAcE5foj/GO9auNnz7iSmvcMTejSMIPynMv6iCg3mYLlVIIAt27GAcQ8hFiAwK8ME/9+UEyy5hZ1RDJFUSQrAsgPrT0/3bWCiExPr9fFGf+85fQlUBcVV2h1Yl5y6pCQDOc5cjIZseQ7giFheQhrBjumVi1YKsa8NjhGVcQXxxj5ZhRcHEtj6zfXhESuzm6I+FWVLw0=
+    local_dir: codedeploy
+    bucket: code-deploy.csye6225-fall2017-wuyutin.me
+    region: us-east-1
+    skip_cleanup: true
+    on:
+     branch: assignment7
+  - provider: codedeploy
+    access_key_id: AKIAIKLAJ4TICD3P7GGQ
+    bucket: code-deploy.csye6225-fall2017-wuyutin.me
+    key: web_app_application_wyt.zip
+    bundle_type: zip
+    application: web_app_application_wyt
+    deployment_group: web_app_application_wyt
+    region: us-east-1
+    secret_access_key:
+      secure: ZsnqMhqTEnGKsXrayA2QYGHZq4OD+nNZYrxVNvhBcg6SzyegyIqMN7hcKImAATAfBNRXRvisusDvkP/LnDUBvtfZ/5vGoUUKqbibJUDRpwI4bSdYuEiz7v0yiukic1OFp7B3pEvGK5WyPQH1PiWcLnQr7tF9rTNRjyGFC7pIL/C+PwO8AByK+K1ToTjoOpi+XQ8Kgf23Se9Xbv1gcxaVrv/y/+C3fmC5dIK3gZHw0GKKDaWOlwCd+6f3oTJikGKao4RcqD6d+SSzDYtvtgd0v6y8GR/DOPV19crLlye9C2/BceYjqrVA2iJQ9lRNuf4nKDFeBjC3I+sJPUbnvQAo5z2m25NMU3GCjQ2tdgDhXgD+xP1/oAlvfl+0+XQs79cKl/S0j5hT3mpjJx2ils8I4wTGtEoDYADujZakrWt+/mYc1CEmsq1lp8ulk0N3qzSviMtclMTxMxxCk9Ek/N2BhVSO2sHZ7SVNfdvuEAcE5foj/GO9auNnz7iSmvcMTejSMIPynMv6iCg3mYLlVIIAt27GAcQ8hFiAwK8ME/9+UEyy5hZ1RDJFUSQrAsgPrT0/3bWCiExPr9fFGf+85fQlUBcVV2h1Yl5y6pCQDOc5cjIZseQ7giFheQhrBjumVi1YKsa8NjhGVcQXxxj5ZhRcHEtj6zfXhESuzm6I+FWVLw0=
+    wait-until-deployed: true
+    on:
+     branch: assignment7
 
 notifications:
   email:
     recipients:
-      -li.jin3@husky.neu.edu
+      -wu.yutin@husky.neu.edu

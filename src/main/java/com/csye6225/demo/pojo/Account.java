@@ -5,24 +5,23 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class User{
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userID", unique = true, nullable = false)
-    private Long userID;
+    @Column(name = "accountID", unique = true, nullable = false)
+    private Long accountID;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
     private Set<Task> tasks;
 
     private String email;
     private String password;
 
-    public User(){}
+    public Account(){}
 
-    public User(String email, String password){
+    public Account(String email){
         this.email = email;
-        this.password = password;
     }
 
     public String getEmail() {
