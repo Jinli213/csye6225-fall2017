@@ -25,9 +25,9 @@ before_deploy:
 
 deploy:
   - provider: s3
-    access_key_id: AKIAIONLSFZA34G4XMJA
-    secret_access_key:
-      secure: QcWui2URFrZsmTYIQB97T0p+d58qFiXeWfneGKbAlgXkS8eY2V0FIANLSjVAazzMAqRdJMCwf9Y1kWg2LdEwJElwVwyn7oiSBPv0ihW+U1bBz18kvBZUydn8QVnz37zo+WG3Hc0lKxuxDz31VQxNij0hUvB2LK+FrtjEStrizBuMrWa5ja2tB7+e9K04VhIaVBBF2qxk9Ok79IIa1V2oIQQHdAF3DJlgSSFy273TYXlFksCUXzmDOrliRlhdHS3Q9ZmdUUb3NoQpiHcli8rWW3KdbYunRPfBuD3l1rY5avcF5uo2z/ItRE+I71IEVNSj3AzBhBIb9+IFzc8aSGghyZhmfLkNxzzq2tBGslLvznwSme/cKFKvbJ+iJPmIpOrRpzZtp6SNgcXPiqtSURbqz00VMBG1LrutD0zWdyh2xnK9LzARqV7sDMPeJqNb0hHcDAhhECK4aXUcyR6SXBXBxaOyzoyLqeKh2VGzI/ZOIkhWbFJC9KXO34/699KGO/heE3aiMTMqFdnZ18bYNtkmiACPEEglcGirLKho6Zbbz1k1ppEdTuiVu9PF2En2OLwI/3PaVCVJUbf7ees4uu2lLSr6/7dat3NmKm2ZoFRFR3necfywcmlbkx8MTYityuyRbEKUe6y1r4WS1L2zHb62BDezyRnqEb/sho00UNKUypQ=
+    access_key_id: AKIAIKPMVNS3GYS2UXIA
+    secret_access_key: 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
+#      secure:
     local_dir: codedeploy
     bucket: code-deploy.csye6225-fall2017-lijin3.me
     region: us-east-1
@@ -35,15 +35,15 @@ deploy:
     on:
      branch: assignment7
   - provider: codedeploy
-    access_key_id: AKIAIONLSFZA34G4XMJA
+    access_key_id: AKIAIKPMVNS3GYS2UXIA
     bucket: code-deploy.csye6225-fall2017-lijin3.me
     key: csye6225_application.zip
     bundle_type: zip
     application: csye6225_application
     deployment_group: csye6225_application
     region: us-east-1
-    secret_access_key:
-     secure: QcWui2URFrZsmTYIQB97T0p+d58qFiXeWfneGKbAlgXkS8eY2V0FIANLSjVAazzMAqRdJMCwf9Y1kWg2LdEwJElwVwyn7oiSBPv0ihW+U1bBz18kvBZUydn8QVnz37zo+WG3Hc0lKxuxDz31VQxNij0hUvB2LK+FrtjEStrizBuMrWa5ja2tB7+e9K04VhIaVBBF2qxk9Ok79IIa1V2oIQQHdAF3DJlgSSFy273TYXlFksCUXzmDOrliRlhdHS3Q9ZmdUUb3NoQpiHcli8rWW3KdbYunRPfBuD3l1rY5avcF5uo2z/ItRE+I71IEVNSj3AzBhBIb9+IFzc8aSGghyZhmfLkNxzzq2tBGslLvznwSme/cKFKvbJ+iJPmIpOrRpzZtp6SNgcXPiqtSURbqz00VMBG1LrutD0zWdyh2xnK9LzARqV7sDMPeJqNb0hHcDAhhECK4aXUcyR6SXBXBxaOyzoyLqeKh2VGzI/ZOIkhWbFJC9KXO34/699KGO/heE3aiMTMqFdnZ18bYNtkmiACPEEglcGirLKho6Zbbz1k1ppEdTuiVu9PF2En2OLwI/3PaVCVJUbf7ees4uu2lLSr6/7dat3NmKm2ZoFRFR3necfywcmlbkx8MTYityuyRbEKUe6y1r4WS1L2zHb62BDezyRnqEb/sho00UNKUypQ=
+    secret_access_key: mn6s0/vc0iYYhgRL3v+Ip3x7DPLaUeIvzhGEHAYx
+#     secure: QcWui2URFrZsmTYIQB97T0p+d58qFiXeWfneGKbAlgXkS8eY2V0FIANLSjVAazzMAqRdJMCwf9Y1kWg2LdEwJElwVwyn7oiSBPv0ihW+U1bBz18kvBZUydn8QVnz37zo+WG3Hc0lKxuxDz31VQxNij0hUvB2LK+FrtjEStrizBuMrWa5ja2tB7+e9K04VhIaVBBF2qxk9Ok79IIa1V2oIQQHdAF3DJlgSSFy273TYXlFksCUXzmDOrliRlhdHS3Q9ZmdUUb3NoQpiHcli8rWW3KdbYunRPfBuD3l1rY5avcF5uo2z/ItRE+I71IEVNSj3AzBhBIb9+IFzc8aSGghyZhmfLkNxzzq2tBGslLvznwSme/cKFKvbJ+iJPmIpOrRpzZtp6SNgcXPiqtSURbqz00VMBG1LrutD0zWdyh2xnK9LzARqV7sDMPeJqNb0hHcDAhhECK4aXUcyR6SXBXBxaOyzoyLqeKh2VGzI/ZOIkhWbFJC9KXO34/699KGO/heE3aiMTMqFdnZ18bYNtkmiACPEEglcGirLKho6Zbbz1k1ppEdTuiVu9PF2En2OLwI/3PaVCVJUbf7ees4uu2lLSr6/7dat3NmKm2ZoFRFR3necfywcmlbkx8MTYityuyRbEKUe6y1r4WS1L2zHb62BDezyRnqEb/sho00UNKUypQ=
     wait-until-deployed: true
     on:
      branch: assignment7
