@@ -3,11 +3,11 @@ os: linux
 
 files:
   - source: ./appspec.yml
-    destination: /home/ubuntu
+    destination: /home/wyt
   - source: ./restartTomcat.sh
-    destination: /home/ubuntu
-  - source: ./build/libs/test-1.0.0.war
-    destination: /var/lib/tomcat7/webapps
+    destination: /home/wyt
+  - source: ./build/libs/ROOT.war
+    destination: /opt/tomcat/webapps
 
 hooks:
   AfterInstall:
