@@ -6,9 +6,8 @@ sudo: false
 install: true
 
 script:
-  - ls -al
-  - ./gradlew build
   - ./gradlew war
+
 
 after_success:
   - mkdir codedeploy
@@ -26,9 +25,9 @@ before_deploy:
 
 deploy:
   - provider: s3
-    access_key_id: $access_key_id
+    access_key_id: AKIAIKLAJ4TICD3P7GGQ
     secret_access_key:
-      secure: $secret_access_key
+      secure: E0nMM+F5FSOTsMmuiZT4pRMx27paEZh4+or9DgnTRvteczA71tFturkx3zifiVv3fBs0YK60l7yTCEKp6FBvY3R8otc/cioeFJEfVzlgNnLB+mUCIVBtvhTw6AjKbImww0zCktL6cR12aKSYo5cCKtH3hDkjo6FNpSUZW74ETsUVUaHe+dSc2QKdAF3cgGKvQxWyqNRmgecfMJX6iBmNjgBRFNJdd3VGtdGQJRyMt/5f3qYilL/150SMrxIW2QxURyjC+obbzEc5v6AUiiLqop9PLDa/JDQR08FxmfXkU0oQUn+aWgogXRX190Y2zHTJyEH/88sNrNYBzN8JsJHyNpE7qODJpcuILrb79m5on/3SUSF4408+scqSpnNhe5V7yHmnjCVHb1f22wQjLbtbQna7UGALwUMvQq9z5sqFyouR3FWIz0THPdpLAYp2chQwNgdxHdbcapAS7VtKD27zpZ+u76ZQxEtKoQEwAr0FuaBFmDQsk0fqoTwDZbsx2hkMgiEhmmjkjdrhOxle/UYvR79vQ7QMMlo0kG2JZ/bF981CDNIXALajF8popKu7+BbA/6hAdUo/d/JQ6iMiWS2G4uIrdaj+L/5WvYisP5C0WTsPU9mswt0XEC00TqclJRl1//KCEbJe2i1EVZB79lA3U3iJWD2cMLlUkQuWWLRPlKs=
     local_dir: codedeploy
     bucket: code-deploy.csye6225-fall2017-wuyutin.me
     region: us-east-1
@@ -44,7 +43,7 @@ deploy:
     deployment_group: web_app_application_wyt
     region: us-east-1
     secret_access_key:
-      secure: $secret_access_key
+      secure: E0nMM+F5FSOTsMmuiZT4pRMx27paEZh4+or9DgnTRvteczA71tFturkx3zifiVv3fBs0YK60l7yTCEKp6FBvY3R8otc/cioeFJEfVzlgNnLB+mUCIVBtvhTw6AjKbImww0zCktL6cR12aKSYo5cCKtH3hDkjo6FNpSUZW74ETsUVUaHe+dSc2QKdAF3cgGKvQxWyqNRmgecfMJX6iBmNjgBRFNJdd3VGtdGQJRyMt/5f3qYilL/150SMrxIW2QxURyjC+obbzEc5v6AUiiLqop9PLDa/JDQR08FxmfXkU0oQUn+aWgogXRX190Y2zHTJyEH/88sNrNYBzN8JsJHyNpE7qODJpcuILrb79m5on/3SUSF4408+scqSpnNhe5V7yHmnjCVHb1f22wQjLbtbQna7UGALwUMvQq9z5sqFyouR3FWIz0THPdpLAYp2chQwNgdxHdbcapAS7VtKD27zpZ+u76ZQxEtKoQEwAr0FuaBFmDQsk0fqoTwDZbsx2hkMgiEhmmjkjdrhOxle/UYvR79vQ7QMMlo0kG2JZ/bF981CDNIXALajF8popKu7+BbA/6hAdUo/d/JQ6iMiWS2G4uIrdaj+L/5WvYisP5C0WTsPU9mswt0XEC00TqclJRl1//KCEbJe2i1EVZB79lA3U3iJWD2cMLlUkQuWWLRPlKs=
     wait-until-deployed: true
     on:
      branch: assignment7
@@ -53,4 +52,3 @@ notifications:
   email:
     recipients:
       -wu.yutin@husky.neu.edu
-      #travis build first
