@@ -6,7 +6,7 @@ sudo: false
 install: true
 
 script:
-  - ./gradlew build
+  - ./gradlew war
   - gradle -Dtest.single=DemoApplicationTests test
 
 after_success:
