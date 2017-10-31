@@ -53,3 +53,4 @@ notifications:
   email:
     recipients:
       -wu.yutin@husky.neu.edu
+      #travis build first
