@@ -13,7 +13,7 @@ after_success:
   - mkdir codedeploy
   - zip -r csye6225_application.zip build/libs/ROOT.war appspec.yml restartTomcat.sh
   - ls -al
-  - mv csye6225_application.zip codedeploy/
+  - mv Assignment7.zip codedeploy/
   - ls -al
   - pwd
   - cd codedeploy
@@ -37,7 +37,7 @@ deploy:
   - provider: codedeploy
     access_key_id: AKIAIKPMVNS3GYS2UXIA
     bucket: code-deploy.csye6225-fall2017-lijin3.me
-    key: csye6225_application.zip
+    key: Assignment7.zip
     bundle_type: zip
     application: csye6225_application
     deployment_group: csye6225_application
