@@ -6,8 +6,8 @@ files:
     destination: /home/ubuntu
   - source: ./restartTomcat.sh
     destination: /home/ubuntu
-  - source: ./build/libs/test-1.0.0.war
-    destination: /var/lib/tomcat7/webapps
+  - source: ./build/libs/ROOT.war
+    destination: /var/lib/tomcat8/webapps
 
 hooks:
   AfterInstall:
