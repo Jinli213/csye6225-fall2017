@@ -26,7 +26,22 @@
                        }
                     }
                  ],
-                "DisableApiTermination": false
+                "DisableApiTermination": false,
+                "UserData": {
+                    "Fn::Base64": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "#!/bin/bash\n",
+                          "export DEBIAN_FRONTEND=noninteractive\n",
+                          "apt-get update && apt-get upgrade -y\n",
+                          "apt-get -y install tomcat8\n",
+                          "cd .ssh",
+                          "ssh -i id_rsa ubuntu@",{ "Ref" : "ParamSubnetID" }
+                        ]
+                      ]
+                    }
+                  }
             }
         },
         "csye6225webapp": {
@@ -157,3 +172,6 @@
        }
    }
 }
+
+
+
