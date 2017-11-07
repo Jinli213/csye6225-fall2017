@@ -6,7 +6,7 @@ sudo: false
 install: true
 
 script:
-  - "./gradlew war"
+  - ./gradlew war
   - gradle -Dtest.single=DemoApplicationTests test
 
 after_success:
@@ -51,4 +51,4 @@ deploy:
 notifications:
   email:
     recipients:
-      - li.jin3@husky.neu.edu
+      -li.jin3@husky.neu.edu

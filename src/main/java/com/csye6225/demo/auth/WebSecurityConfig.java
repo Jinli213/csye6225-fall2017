@@ -1,16 +1,11 @@
 package com.csye6225.demo.auth;
 
-<<<<<<< HEAD
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-=======
 import com.csye6225.demo.pojo.Account;
 import com.csye6225.demo.pojo.AccountRepository;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
->>>>>>> assignment7
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -21,12 +16,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.session.web.http.HeaderHttpSessionStrategy;
 import org.springframework.session.web.http.HttpSessionStrategy;
 
-<<<<<<< HEAD
-=======
 import java.util.List;
 
 
->>>>>>> assignment7
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -34,13 +26,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private BasicAuthEntryPoint basicAuthEntryPoint;
 
   @Autowired
-<<<<<<< HEAD
-=======
   private AccountRepository accountRepository;
 
 
   @Autowired
->>>>>>> assignment7
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   protected void configure(HttpSecurity http) throws Exception {
@@ -53,10 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .httpBasic()
         .authenticationEntryPoint(basicAuthEntryPoint);
-<<<<<<< HEAD
-=======
 
->>>>>>> assignment7
   }
 
   @Bean
@@ -66,12 +52,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Bean
   public UserDetailsService userDetailsService() {
-<<<<<<< HEAD
-    InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-    manager.createUser(User.withUsername("user").password(bCryptPasswordEncoder.encode("password")).roles("USER").build());
-    return manager;
-  }
-=======
 
     InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
     manager.createUser(User.withUsername("user").password(bCryptPasswordEncoder.encode("password")).roles("USER").build());
@@ -83,5 +63,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     return manager;
   }
 
->>>>>>> assignment7
 }

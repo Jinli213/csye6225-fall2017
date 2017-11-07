@@ -65,7 +65,7 @@ public class TaskController {
         t.setCreatedBy(username);
         t.setDescription(task.getDescription());
         taskRepository.save(t);
-        return "task created successfully, the task ID is "+t.getTaskID();
+        return "task created successfully";
     }
 
     @RequestMapping(value = "/tasks/{id}", method = RequestMethod.PUT)

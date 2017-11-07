@@ -27,10 +27,6 @@ public class HomeController {
     if (SecurityContextHolder.getContext().getAuthentication() != null
         && SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
       jsonObject.addProperty("message", "you are not logged in!!!");
-<<<<<<< HEAD
-
-=======
->>>>>>> assignment7
     } else {
       jsonObject.addProperty("message", "you are logged in. current time is " + new Date().toString());
     }
