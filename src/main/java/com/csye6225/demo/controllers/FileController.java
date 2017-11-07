@@ -1,5 +1,9 @@
 package com.csye6225.demo.controllers;
 
+
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.csye6225.demo.pojo.File;
 import com.csye6225.demo.pojo.FileRepository;
 import com.csye6225.demo.pojo.Task;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Paths;
 import java.util.Set;
 
 @Controller
@@ -45,6 +50,15 @@ public class FileController {
     @ResponseBody
     public String attachFile(@PathVariable String id, @RequestBody File file){
 
+        String key_name = Paths.get(file.getUrl()).getFileName().toString();
+
+        AmazonS3 s3 = new AmazonS3Client();
+        try {
+            s3.putObject("code-deploy.csye6225-fall2017-lijin3.me", key_name, new java.io.File(file.getUrl()));
+        }catch (AmazonServiceException e){
+            System.err.println(e.getErrorMessage());
+            System.exit(1);
+        }
         File f = new File();
         f.setTask(taskRepository.findOne(id));
         f.setUrl(file.getUrl());
