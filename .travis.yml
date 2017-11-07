@@ -1,0 +1,53 @@
+language: java
+jdk:
+  - oraclejdk8
+
+sudo: false
+install: true
+
+script:
+  - ./gradlew war
+
+
+after_success:
+ - mkdir codedeploy
+ - zip -r CSYE6225.zip build/libs/ROOT.war appspec.yml restartTomcat.sh
+ - ls -al
+ - mv CSYE6225.zip codedeploy/
+ - ls -al
+ - pwd
+ - cd codedeploy
+ - ls -al
+ - pwd
+
+before_deploy:
+ - cd ..
+deploy:
+ - provider: s3
+   access_key_id: AKIAJTILCGKF5BZYKOCA
+   secret_access_key:
+     secure: Kzy2HFGop+C0ph6skDzms1Rc7u+GIokW6sQtIwGhpKybfJeMtfzTYrodFyJ3EYB3uysaLdPrG/QO2N9fyeAKUzfTYhNEgiiCHaXEpzGgKcTR1fmDQd2Ns8NZoUOgeUV+XUxR2zqWJnC48U1qRy77jys9M3gFDssxnrTWZDSPg/YfbGZVF8cY8jRxQ5hjv5IOr45sYVnyw2XpeAOuJ8YlOX6W90ka02i1I1aihBzl5QGKnwzDWGdvnzR1VeVYg53C8I9UTOKicGri4+lzJz27X0ptUIEIaVWLIm77nVfwGyXX0uQ7TSq6gfsWXr6Tk2y3eOzbfPKOxRyjaA6DmhrqnWHrnCeqaZsfxuK/v4sxOeDPYbFawEvZgzs/EzrmVyPQ9p+9qcIsdt7qzgliWraqqNFt1r8kiETPoIKNvxDA06b3jo6w4nO7hQL3YviYBSc16PBbsY1PSvX8hgkamLteDi9gxuqLr7unko4HM04xB8JfMwAlAYiLkksGALvPzfQzVtxI7VTdPJQP+JNDw/v18JIuf+yKaXv/IZMlb0p71g3K5d9VmlSq/Zh4A+o7WIpIO8EmgDQVAABDSwMg7s5uaMc7/ck40eWxM1arFmiBWk/pmqoKNexYTIllj+k5tl5Uf588NfjRyjBncy+CgK31q8TkgXGkyoh0ZXdJUxzZaRc=
+   local_dir: codedeploy
+   bucket: code-deploy.csye6225-fall2017-zhaochenya.me
+   region: us-east-1
+   skip_cleanup: true
+   on:
+    branch: assignment7
+ - provider: codedeploy
+   access_key_id: AKIAJTILCGKF5BZYKOCA
+   bucket: code-deploy.csye6225-fall2017-zhaochenya.me
+   key: CSYE6225.zip
+   bundle_type: zip
+   application: csye6225_application
+   deployment_group: csye6225_application
+   region: us-east-1
+   secret_access_key:
+        secure: Kzy2HFGop+C0ph6skDzms1Rc7u+GIokW6sQtIwGhpKybfJeMtfzTYrodFyJ3EYB3uysaLdPrG/QO2N9fyeAKUzfTYhNEgiiCHaXEpzGgKcTR1fmDQd2Ns8NZoUOgeUV+XUxR2zqWJnC48U1qRy77jys9M3gFDssxnrTWZDSPg/YfbGZVF8cY8jRxQ5hjv5IOr45sYVnyw2XpeAOuJ8YlOX6W90ka02i1I1aihBzl5QGKnwzDWGdvnzR1VeVYg53C8I9UTOKicGri4+lzJz27X0ptUIEIaVWLIm77nVfwGyXX0uQ7TSq6gfsWXr6Tk2y3eOzbfPKOxRyjaA6DmhrqnWHrnCeqaZsfxuK/v4sxOeDPYbFawEvZgzs/EzrmVyPQ9p+9qcIsdt7qzgliWraqqNFt1r8kiETPoIKNvxDA06b3jo6w4nO7hQL3YviYBSc16PBbsY1PSvX8hgkamLteDi9gxuqLr7unko4HM04xB8JfMwAlAYiLkksGALvPzfQzVtxI7VTdPJQP+JNDw/v18JIuf+yKaXv/IZMlb0p71g3K5d9VmlSq/Zh4A+o7WIpIO8EmgDQVAABDSwMg7s5uaMc7/ck40eWxM1arFmiBWk/pmqoKNexYTIllj+k5tl5Uf588NfjRyjBncy+CgK31q8TkgXGkyoh0ZXdJUxzZaRc=
+   wait-until-deployed: true
+   on:
+    branch: assignment7
+
+notifications:
+  email:
+    recipients:
+      -zhao.chenya@husky.neu.edu
