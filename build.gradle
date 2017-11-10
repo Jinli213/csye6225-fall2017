@@ -20,7 +20,7 @@ apply plugin: 'io.spring.dependency-management'
 
 dependencyManagement {
     imports {
-        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.161'
+        mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.46'
     }
 }
 
@@ -62,6 +62,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
 
     compile('com.amazonaws:aws-java-sdk-s3')
+    compile('com.amazonaws:aws-java-sdk-sns')
 
     compile('com.h2database:h2:+')
 

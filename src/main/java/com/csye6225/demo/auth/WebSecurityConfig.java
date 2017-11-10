@@ -38,6 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .disable()
         .authorizeRequests()
         .antMatchers("/").permitAll()
+        .antMatchers("/forgot-password").permitAll()
         .anyRequest().authenticated()
         .and()
         .httpBasic()
