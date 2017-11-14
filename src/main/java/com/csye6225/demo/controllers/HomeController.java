@@ -1,6 +1,18 @@
 package com.csye6225.demo.controllers;
 
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
+import com.amazonaws.services.dynamodbv2.model.TableDescription;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
+import com.amazonaws.services.simpleemail.model.*;
 import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
@@ -15,8 +27,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -61,27 +73,17 @@ public class HomeController {
 
     JsonObject jsonObject = new JsonObject();
 
-    if (SecurityContextHolder.getContext().getAuthentication() != null
-            && SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+    String email = account.getEmail();
 
-      String email = account.getEmail();
-
-      String topicArn = "arn:aws:sns:us-east-1:365423270567:password_reset";
-      AmazonSNSClient snsClient = new AmazonSNSClient();
-
-      //subscribe to an SNS topic
-      SubscribeRequest subRequest = new SubscribeRequest(topicArn, "email", email);
-      snsClient.subscribe(subRequest);
+    String topicArn = "arn:aws:sns:us-east-1:365423270567:password_reset";
+    AmazonSNSClient snsClient = new AmazonSNSClient();
 
       //publish to an SNS topic
-      String msg = "My text published to SNS topic with email endpoint";
-      PublishRequest publishRequest = new PublishRequest(topicArn, msg);
-      PublishResult publishResult = snsClient.publish(publishRequest);
+    PublishRequest publishRequest = new PublishRequest(topicArn, email);
+    PublishResult publishResult = snsClient.publish(publishRequest);
 
-      jsonObject.addProperty("message", "Please confirm your subscription!!!");
-    } else {
-      jsonObject.addProperty("message", "you are logged in. current time is " + new Date().toString());
-    }
+    jsonObject.addProperty("message", "Please receive your email with the token: ");
+
 
     return jsonObject.toString();
   }

@@ -59,7 +59,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     List<Account> users = (List<Account>) accountRepository.findAll();
     for(Account a : users){
       manager.createUser(User.withUsername(a.getEmail()).password(a.getPassword()).roles("USER").build());
-      System.out.println("the user info  "+a.getEmail()+"  "+a.getPassword());
     }
     return manager;
   }
