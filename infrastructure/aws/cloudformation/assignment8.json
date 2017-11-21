@@ -1,0 +1,78 @@
+{
+"AWSTemplateFormatVersion": "2010-09-09",
+"Description": "Sample CloudFormation Template for CSYE 6225 - Fall 2017",
+"Resources": {
+"LambdaS3ExecutionService": {
+"Type": "AWS::IAM::Role",
+"Properties": {
+"AssumeRolePolicyDocument": {
+"Version" : "2012-10-17",
+"Statement": [ {
+"Effect": "Allow",
+"Principal": {
+"Service": [ "lambda.amazonaws.com" ]
+},
+"Action": [ "sts:AssumeRole" ]
+} ]
+},
+"Path": "/",
+"ManagedPolicyArns": [ "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole" ,
+"arn:aws:iam::aws:policy/AmazonSESFullAccess" ,
+"arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess" ],
+"RoleName": "lambda-s3-execution-role"
+}
+},
+
+"SNSTopic":{
+"Type" : "AWS::SNS::Topic",
+"Properties" : {
+"DisplayName" : "demo",
+"TopicName" : "password_reset"
+}
+},
+
+
+"DynamoDBTable": {
+"Type" : "AWS::DynamoDB::Table",
+"Properties" : {
+"AttributeDefinitions" : [
+{
+"AttributeName" : "email",
+"AttributeType" : "S"
+}
+],
+"KeySchema" : [
+{
+"AttributeName" : "email",
+"KeyType" : "HASH"
+}
+],
+"TableName" : "csye6225",
+"ProvisionedThroughput" : {
+"ReadCapacityUnits" : "5",
+"WriteCapacityUnits" : "5"
+},
+
+"TimeToLiveSpecification" :
+{
+"AttributeName" : "ttl",
+"Enabled" : true
+}
+}
+},
+"RecordServiceS3Bucket": {
+"Type": "AWS::S3::Bucket",
+"DeletionPolicy": "Delete",
+"Properties": {
+"BucketName" : { "Fn::Join" : ["", [{ "Ref" : "ParamRecordSetsName" }, "csye6225.com"]]}
+}
+}
+},
+
+"Parameters" : {
+"ParamRecordSetsName" : {
+"Type" : "String"
+}
+}
+
+}
