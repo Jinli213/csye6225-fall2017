@@ -11,7 +11,7 @@ script:
 
 after_success:
   - mkdir codedeploy
-  - zip -r CSYE6225PROJECT.zip build/libs/ROOT.war appspec.yml restartTomcat.sh
+  - zip -r CSYE6225PROJECT.zip build/libs/ROOT.war appspec.yml restartTomcat.sh infrastructure/cloudwatch/awslogs.conf
   - ls -al
   - mv CSYE6225PROJECT.zip codedeploy/
   - ls -al
