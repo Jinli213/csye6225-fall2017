@@ -33,7 +33,7 @@ deploy:
     region: us-east-1
     skip_cleanup: true
     on:
-     branch: assignment9
+     branch: assignment10
   - provider: codedeploy
     access_key_id: AKIAIKPMVNS3GYS2UXIA
     bucket: code-deploy.csye6225-fall2017-lijin3.me
@@ -46,7 +46,7 @@ deploy:
      secure: V6bGILP+NERzHGdr/tJX12klZGwaqtdhDp11IPpISln4w7LNEIF/cU8aq184cp3rZScgrVI6R6qNrM9Lrq6JKoywgHiwxwkCRWfhmCnSCsnuFRlmAaQfu9US9nAkGA8+D9CrEqnx3z8KTb9iYQmYiYqQxoQfjYzt6wTFth4peh8P6CZV0jSo1/XpV5iaKlwAFCCjkKXFU7vO/2aWg319iUMzAAYh/NS2ryNK4jB6wV/q5FGebXVDU1PRPbjNSw2wGD0kNkpfIGNpunxQtIPCUvCbS0+poS91+E4JbZJxdl85SSiYk+5p7MLBuCJVnCzZHC1UpUduobPds9Xd2MDzXKo+Wdh7ttwHxt9FDVdLruQrJ4uXjp8RHsN5IKMeOxGbRt+CmvrZLGSGyRQ72fIB+IpiJn6DjqzQ00s6zv0fbvDA0lpmrK6TVIpD/l8MWZg14adYerNKJEA+KnAmcOx3VphEHDPC9QaZy7Z1bqaiJEl9WAmBrWBToWu6lpRfS3LyFhj9Ozhh7LCgxVH+bwQiLXlXbPAa7RiHl33pCbT16EYd26u8VsXUgHRTe13aCoLnGr7hGTbtMw5B2a6WfGGuGH5ujmDyHvy5TiQ7ulihMw271BEyc+ZVU1DliA2kaPBMfOZQQKqE1Z4kaPEakSLwQiJxMIo2lhMugiYufmb0ntw=
     wait-until-deployed: true
     on:
-     branch: assignment9
+     branch: assignment10
 
 notifications:
   email:
