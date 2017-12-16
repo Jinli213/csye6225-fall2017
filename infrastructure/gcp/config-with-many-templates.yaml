@@ -1,0 +1,17 @@
+imports:
+- path: vm-template.py
+- path: network-template.py
+- path: firewall-template.py
+- path: bucket-template.py
+- path: sql-template.py
+- path: compute-engine-template.py
+
+resources:
+- name: compute-engine-setup
+  type: compute-engine-template.py
+- name: csye6225
+  type: storage.v1.bucket
+  properties:
+      IPv4Range: 10.0.0.1/16
+- name: csye6225-cloud-sql
+  type: sql-template.py

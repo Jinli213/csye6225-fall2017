@@ -1,0 +1,10 @@
+imports:
+
+- path: bucket-template.py
+
+
+resources:
+- name: csye6225
+  type: storage.v1.bucket
+  properties:
+    IPv4Range: 10.0.0.1/16

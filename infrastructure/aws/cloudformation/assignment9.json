@@ -1,0 +1,168 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Sample CloudFormation Template for CSYE 6225 - Fall 2017",
+    "Resources": {
+    "CloudWATCH": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+      "AssumeRolePolicyDocument": {
+         "Version" : "2012-10-17",
+         "Statement": [ {
+            "Effect": "Allow",
+            "Principal": {
+               "Service": [ "ec2.amazonaws.com" ]
+            },
+            "Action": [ "sts:AssumeRole" ]
+         } ]
+      },
+      "Path": "/",
+      "Policies": [ {
+         "PolicyName": "cw",
+         "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "logs:CreateLogGroup",
+                        "logs:CreateLogStream",
+                        "logs:PutLogEvents",
+                        "logs:DescribeLogStreams"
+                    ],
+                    "Resource": [
+                        "arn:aws:logs:*:*:*"
+                    ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:Get*",
+                    "s3:List*",
+                    "s3:PutObject"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*"
+          }
+            ]
+        }
+         } ]
+      }
+},
+"EC2InstanceProfile": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+      "Path": "/",
+      "Roles": [ {
+         "Ref": "CloudWATCH"
+      } ]
+   }
+},
+        "EC2Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": "ami-cd0f5cb6",
+                "InstanceType": "t2.micro",
+                "IamInstanceProfile" : {"Ref" : "EC2InstanceProfile"},
+                "Tags" : [{
+                  "Key" : "NAME",
+                  "Value" : "csye6225"
+                  }],
+                "SecurityGroupIds": [
+                    {
+                        "Fn::GetAtt": [
+                            "csye6225webapp",
+                            "GroupId"
+                        ]
+                    }
+                ],
+                "KeyName": "id_rsa",
+                "SubnetId": { "Ref" : "ParamSubnetID" },
+                "UserData": {
+                  "Fn::Base64":{
+                    "Fn::Join":[
+                      "",
+                      [
+                        "#!/bin/bash\n",
+                        "sudo apt-get update -y\n",
+                        "sudo apt-get install python -y\n",
+                        "curl https://s3.amazonaws.com//aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O\n",
+                        "chmod +x ./awslogs-agent-setup.py\n",
+                        "sudo ./awslogs-agent-setup.py -n -r us-east-1 -c s3://myawsbucket/my-config-file\n",
+                        "sudo apt-get update \n",
+                        "sudo apt-get -y install tomcat8\n",
+                        "sudo apt-get update\n",
+                        "sudo apt-get -y install ruby\n",
+                        "sudo apt-get install wget\n",
+                        "cd /home/ubuntu\n",
+                        "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install\n",
+                        "chmod +x ./install\n",
+                        "sudo ./install auto\n",
+                        "sudo service codedeploy-agent start\n"
+
+
+                      ]
+                    ]
+                  }
+                },
+                "BlockDeviceMappings" : [
+                    {
+                       "DeviceName" : "/dev/sda1",
+                       "Ebs" : {
+                          "VolumeType" : "gp2",
+                          "VolumeSize" : "16"
+                       }
+                    }
+                 ],
+                "DisableApiTermination": false
+            }
+        },
+        "csye6225webapp": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupName": "csye6225-fall2017-mystack-webapp",
+                "GroupDescription": "security group for ec2",
+                "VpcId" : { "Ref" : "ParamVPCID" },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "443",
+                        "ToPort": "443",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            }
+        }
+    },
+	"Parameters" : {
+       "ParamVPCID" : {
+            "Type" : "String"
+       },
+       "ParamSubnetID" : {
+            "Type" : "String"
+       },
+       "ParamSubnetID2" : {
+            "Type" : "String"
+       },
+       "ParamHostedZoneID" : {
+            "Type" : "String"
+       },
+       "ParamRecordSetsName" : {
+            "Type" : "String"
+       },
+       "ParamAccountID" : {
+            "Type" : "String"
+       }
+   }
+}
